@@ -1,0 +1,23 @@
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: dragonfly-ha
+  namespace: dragonfly
+  labels:
+    app: dragonfly
+    project: consumer-project
+spec:
+  replicas: 3
+  args:
+    - "--dbfilename=dragonfly-backup-{timestamp}"
+    - "--snapshot_cron=* * * * *"
+  resources:
+    limits:
+      memory: "8Gi"
+      cpu: "500m"
+    requests:
+      memory: "4Gi"
+      cpu: "250m"
+  serviceSpec:
+    type: ClusterIP
+
