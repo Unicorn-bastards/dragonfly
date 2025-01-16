@@ -1,16 +1,21 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: dragonfly-ha
-  namespace: dragonfly
+  name: dragonfly-sample
+  namespace: dragonfly-operator-system
   labels:
     app: dragonfly
     project: consumer-project
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/instance: dragonfly-sample
+    app.kubernetes.io/part-of: dragonfly-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dragonfly-operator
 spec:
   replicas: 3
   args:
     - "--dbfilename=dragonfly-backup-{timestamp}"
-    - "--snapshot_cron=* * * * *"
+    - "--snapshot_cron=0 * * * *"  # Every hour
   resources:
     limits:
       memory: "8Gi"
@@ -20,4 +25,12 @@ spec:
       cpu: "250m"
   serviceSpec:
     type: ClusterIP
+  snapshot:
+    dir: /data
+    persistentVolumeClaimSpec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 20Gi
 
