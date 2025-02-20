@@ -11,10 +11,14 @@ metadata:
   namespace: dragonfly-operator-system
 spec:
   replicas: 1
+  args:
+    - "--maxmemory=32gb"
+    - "--conn_io_thread_start=40"
+    - "--maxclients=200000"
   resources:
     requests:
-      cpu: 10
-      memory: 8Gi
-    limits:
-      cpu: 20
+      cpu: 5
       memory: 16Gi
+    limits:
+      cpu: 10
+      memory: 32Gi
